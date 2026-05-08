@@ -1,0 +1,500 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --bg:        #050510;
+  --surface:   #0a0a1a;
+  --surface2:  #0f0f22;
+  --border:    #1a1a3a;
+
+  --cyan:      #700101;
+  --magenta:   #0819b6;
+  --yellow:    #f5e642;
+  --dim-cyan:  #4a0101;
+  --dim-mag:   #04107a;
+
+  --text:      #e0e8ff;
+  --muted:     #4a5080;
+
+  --glow-c:    0 0 8px #70010188, 0 0 24px #70010133;
+  --glow-m:    0 0 8px #0819b688, 0 0 24px #0819b633;
+  --glow-y:    0 0 8px #f5e64288, 0 0 24px #f5e64233;
+
+  --cell-size: clamp(88px, 18vw, 115px);
+  --radius:    2px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-direction: column;        
+
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 245, 255, 0.015) 2px,
+    rgba(0, 245, 255, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 100;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, #1a1a40 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hidden { display: none !important; }
+
+
+#setup-screen {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem;
+  animation: fadeIn 0.5s ease;
+}
+
+.setup-card {
+  background: var(--surface);
+  border: 1px solid var(--dim-cyan);
+  box-shadow: var(--glow-c), inset 0 0 60px rgba(0,245,255,0.03);
+  padding: 2.5rem 2.5rem 3rem;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  position: relative;
+}
+
+.setup-card::before,
+.setup-card::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: var(--cyan);
+  border-style: solid;
+}
+.setup-card::before {
+  top: -1px; left: -1px;
+  border-width: 2px 0 0 2px;
+}
+.setup-card::after {
+  bottom: -1px; right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 8vw, 2.8rem);
+  letter-spacing: 0.1em;
+  line-height: 1;
+  color: var(--text);
+  text-shadow: var(--glow-c);
+}
+
+.logo span {
+  color: var(--cyan);
+}
+
+.logo-small {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  color: var(--text);
+}
+.logo-small span { color: var(--cyan); }
+
+.tagline {
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: -0.8rem;
+}
+
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.input-group label {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim-cyan);
+}
+
+.input-group input {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-bottom-color: var(--dim-cyan);
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  padding: 0.65rem 0.85rem;
+  outline: none;
+  border-radius: var(--radius);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.input-group input:focus {
+  border-color: var(--cyan);
+  box-shadow: var(--glow-c);
+}
+
+.input-group input::placeholder { color: #222244; }
+
+
+button {
+  cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+  border-radius: var(--radius);
+  transition: all 0.15s ease;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#start-btn {
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-size: 0.82rem;
+  padding: 0.9rem;
+  box-shadow: var(--glow-c);
+  position: relative;
+  overflow: hidden;
+}
+
+#start-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(0,245,255,0.08) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+
+#start-btn:hover::before { transform: translateX(100%); }
+
+#start-btn:hover {
+  background: rgba(0, 245, 255, 0.1);
+  color: #fff;
+  box-shadow: var(--glow-c), 0 0 40px rgba(0,245,255,0.2);
+}
+
+#restart {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.72rem;
+  padding: 0.6rem 1.4rem;
+  margin-top: 0.25rem;
+}
+
+#restart:hover {
+  border-color: var(--magenta);
+  color: var(--magenta);
+  box-shadow: var(--glow-m);
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.68rem;
+  padding: 0.35rem 0.7rem;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.back-btn:hover {
+  border-color: var(--dim-cyan);
+  color: var(--cyan);
+}
+
+/* =====================
+   GAME SCREEN
+===================== */
+#game-screen {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 500px;
+  animation: fadeIn 0.4s ease;
+}
+
+.game-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.scoreboard {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.score-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.8rem 1rem 0.9rem;
+  gap: 0.1rem;
+  position: relative;
+}
+
+#score-card-x { border-right: 1px solid var(--border); }
+
+.score-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+#score-card-x::after {
+  background: var(--cyan);
+  box-shadow: var(--glow-c);
+  opacity: 1;
+}
+#score-card-o::after {
+  background: var(--magenta);
+  box-shadow: var(--glow-m);
+  opacity: 1;
+}
+
+.score-divider {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.score-marker {
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+.score-name {
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score-num {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+#score-card-x .score-num {
+  color: var(--cyan);
+  text-shadow: var(--glow-c);
+}
+#score-card-o .score-num {
+  color: var(--magenta);
+  text-shadow: var(--glow-m);
+}
+
+
+#status {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  min-height: 1.2em;
+  transition: color 0.2s, text-shadow 0.2s;
+  margin: 3rem 0;   
+  padding: 0.5rem; 
+}
+
+#status[data-type="win"] {
+  color: var(--yellow);
+  text-shadow: var(--glow-y);
+  animation: textFlicker 0.6s ease;
+}
+
+#status[data-type="tie"] {
+  color: var(--magenta);
+  text-shadow: var(--glow-m);
+}
+
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, var(--cell-size));
+  grid-template-rows: repeat(3, var(--cell-size));
+  gap: 4px;
+  background: #04040f;
+  border: 1px solid var(--dim-cyan);
+  padding: 4px;
+  box-shadow: var(--glow-c);
+}
+
+.cell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 5.5vw, 2.4rem);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.2s;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.cell:hover:not([data-marker="X"]):not([data-marker="O"]) {
+  background: var(--surface2);
+  border-color: #2a2a55;
+}
+
+.cell:hover:not([data-marker="X"]):not([data-marker="O"])::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0,245,255,0.06) 0%, transparent 70%);
+}
+
+.cell[data-marker="X"] {
+  color: var(--cyan);
+  text-shadow: var(--glow-c);
+  border-color: var(--dim-cyan);
+  cursor: default;
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cell[data-marker="O"] {
+  color: var(--magenta);
+  text-shadow: var(--glow-m);
+  border-color: var(--dim-mag);
+  cursor: default;
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cell.winner[data-marker="X"] {
+  background: rgba(0, 245, 255, 0.08);
+  border-color: var(--cyan);
+  box-shadow: inset 0 0 20px rgba(0,245,255,0.15), var(--glow-c);
+  animation: winFlash 0.5s ease forwards;
+}
+
+.cell.winner[data-marker="O"] {
+  background: rgba(255, 0, 170, 0.08);
+  border-color: var(--magenta);
+  box-shadow: inset 0 0 20px rgba(255,0,170,0.15), var(--glow-m);
+  animation: winFlash 0.5s ease forwards;
+}
+
+@keyframes popIn {
+  0%   { transform: scale(0.5) rotate(-8deg); opacity: 0; }
+  100% { transform: scale(1)   rotate(0deg);  opacity: 1; }
+}
+
+@keyframes winFlash {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.1); }
+  60%  { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes textFlicker {
+  0%   { opacity: 1; }
+  15%  { opacity: 0.3; }
+  30%  { opacity: 1; }
+  45%  { opacity: 0.5; }
+  60%  { opacity: 1; }
+}
+
+
+@media (max-width: 420px) {
+  :root { --cell-size: 90px; }
+  .setup-card { padding: 2rem 1.4rem; }
+}
+
+.site-title {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  z-index: 10;
+  white-space: nowrap;
+  text-shadow: var(--glow-c);
+  color: var(--cyan);
+}
